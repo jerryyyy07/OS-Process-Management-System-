@@ -1,0 +1,16 @@
+Category,ProductName,Price,Tax,Discount
+Electronics,Smartphone_X,799.99,40.00,-50.00
+Electronics,Laptop_Pro,1299.50,65.00,0
+Clothing,Winter_Jacket,120.00,6.00,-15.00
+Clothing,Denim_Jeans,45.50,2.25,0
+Groceries,Organic_Apples_1kg,4.99,0,0
+Groceries,Whole_Milk_1L,2.50,0,0
+Groceries,Bread_Loaf,3.20,0,0
+Home_Garden,Lawn_Mower,249.99,12.50,-20.00
+Home_Garden,Plant_Pot,15.00,0.75,0
+Electronics,Wireless_Earbuds,149.99,7.50,-10.00
+Clothing,Cotton_TShirt,15.00,0.75,0
+Sports,Yoga_Mat,25.00,1.25,0
+Sports,Dumbbells_10kg,55.00,2.75,-5.00
+Automotive,Motor_Oil_5L,35.99,1.80,0
+Automotive,Wiper_Blades,18.50,0.92,0
