@@ -8,10 +8,11 @@ set -u
 
 # Function: Display usage
 usage() {
-    echo "Usage: $0 -i <input_dir> -o <output_dir> -n <num_threads> [-c]"
+    echo "Usage: $0 -i <input_dir> -o <output_dir> -n <num_threads> -q <queue_size> [-c]"
     echo "  -i  Input directory containing CSV files"
     echo "  -o  Output directory for reports"
     echo "  -n  Number of worker threads for processor"
+    echo "  -q  Queue size for bounded buffer"
     echo "  -c  Clean build before running"
     exit 1
 }
@@ -41,20 +42,22 @@ trap cleanup EXIT INT TERM
 INPUT_DIR=""
 OUTPUT_DIR=""
 THREADS=""
+QUEUE_SIZE=""
 CLEAN=0
 
-while getopts "i:o:n:ch" opt; do
+while getopts "i:o:n:q:ch" opt; do
     case ${opt} in
         i ) INPUT_DIR=$OPTARG ;;
         o ) OUTPUT_DIR=$OPTARG ;;
         n ) THREADS=$OPTARG ;;
+        q ) QUEUE_SIZE=$OPTARG ;;
         c ) CLEAN=1 ;;
         h ) usage ;;
         * ) usage ;;
     esac
 done
 
-if [ -z "$INPUT_DIR" ] || [ -z "$OUTPUT_DIR" ] || [ -z "$THREADS" ]; then
+if [ -z "$INPUT_DIR" ] || [ -z "$OUTPUT_DIR" ] || [ -z "$THREADS" ] || [ -z "$QUEUE_SIZE" ]; then
     usage
 fi
 
@@ -81,7 +84,6 @@ fi
 mkdir -p "$OUTPUT_DIR"
 
 # Launch dispatcher in the background
-QUEUE_SIZE=100
 FIFO_PATH="/tmp/retail_fifo_$$"
 SHM_NAME="/retail_shm_$$"
 SEM_NAME="/retail_sem_$$"
@@ -99,6 +101,7 @@ rm -f dispatcher.pid
 # Arithmetic expansion and output check
 if [ -f "$OUTPUT_DIR/report.csv" ]; then
     RECORDS_PROC=$(tail -n +2 "$OUTPUT_DIR/report.csv" | awk -F',' '{sum+=$3} END {print sum}')
+    if [ -z "$RECORDS_PROC" ]; then RECORDS_PROC=0; fi
     let TOTAL_PROC=$RECORDS_PROC+0
     echo "[run.sh] Pipeline finished with exit code $EXIT_STATUS. Processed $TOTAL_PROC records."
 else

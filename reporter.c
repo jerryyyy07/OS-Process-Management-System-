@@ -12,6 +12,15 @@ int compare_revenue(const void *a, const void *b) {
     return 0;
 }
 
+// Helper function to sort products by revenue descending
+int compare_prod_revenue(const void *a, const void *b) {
+    const ProductEntry *pa = (const ProductEntry *)a;
+    const ProductEntry *pb = (const ProductEntry *)b;
+    if (pa->total_revenue < pb->total_revenue) return 1;
+    if (pa->total_revenue > pb->total_revenue) return -1;
+    return 0;
+}
+
 int main(int argc, char *argv[]) {
     if (argc < 4) {
         fprintf(stderr, "Usage: reporter <shm_name> <sem_name> <output_dir>\n");
@@ -48,6 +57,11 @@ int main(int argc, char *argv[]) {
     memcpy(entries, shm->categories, num_cats * sizeof(CategoryEntry));
     qsort(entries, num_cats, sizeof(CategoryEntry), compare_revenue);
 
+    int num_prods = shm->num_products;
+    ProductEntry prod_entries[MAX_PRODUCTS];
+    memcpy(prod_entries, shm->products, num_prods * sizeof(ProductEntry));
+    qsort(prod_entries, num_prods, sizeof(ProductEntry), compare_prod_revenue);
+
     /* ---- 3. Write report.csv (Machine-readable) ---- */
     char csv_path[MAX_PATH_LEN];
     snprintf(csv_path, sizeof(csv_path), "%s/report.csv", output_dir);
@@ -81,13 +95,22 @@ int main(int argc, char *argv[]) {
         printf(" RETAIL TRANSACTIONS REPORT (TOP %d)\n", TOP_N_REPORT);
         printf("========================================\n");
         printf("Total Records Processed: %llu\n", (unsigned long long)shm->total_records);
-        printf("Distinct Categories: %d\n\n", num_cats);
+        printf("Distinct Categories: %d\n", num_cats);
+        printf("Distinct Products: %d\n\n", num_prods);
         
+        printf("--- TOP CATEGORIES ---\n");
         int print_count = (num_cats < TOP_N_REPORT) ? num_cats : TOP_N_REPORT;
         for (int i = 0; i < print_count; i++) {
             printf("%d. %-20s | Revenue: $%.2f (Rows: %llu)\n", 
                    i+1, entries[i].category, entries[i].total_revenue, 
                    (unsigned long long)entries[i].record_count);
+        }
+        
+        printf("\n--- TOP PRODUCTS ---\n");
+        int prod_print_count = (num_prods < TOP_N_REPORT) ? num_prods : TOP_N_REPORT;
+        for (int i = 0; i < prod_print_count; i++) {
+            printf("%d. %-20s | Revenue: $%.2f\n", 
+                   i+1, prod_entries[i].product, prod_entries[i].total_revenue);
         }
         printf("========================================\n");
         fflush(stdout);

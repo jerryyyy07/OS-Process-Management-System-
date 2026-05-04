@@ -98,6 +98,8 @@ static void bq_destroy(BoundedQueue *q)
  * ================================================================== */
 static CategoryEntry   g_agg[MAX_CATEGORIES];
 static int             g_num_cats   = 0;
+static ProductEntry    g_prod_agg[MAX_PRODUCTS];
+static int             g_num_prods  = 0;
 static uint64_t        g_total_rows = 0;
 static pthread_mutex_t g_agg_mutex  = PTHREAD_MUTEX_INITIALIZER;
 
@@ -112,6 +114,19 @@ static int agg_find_or_create(const char *cat)
     memset(&g_agg[idx], 0, sizeof(CategoryEntry));
     strncpy(g_agg[idx].category, cat, MAX_CATEGORY_LEN - 1);
     g_agg[idx].min_single = 1e308;  /* will be updated on first row */
+    return idx;
+}
+
+/* Find-or-create a product entry; returns index or -1 if table full */
+static int agg_prod_find_or_create(const char *prod)
+{
+    for (int i = 0; i < g_num_prods; i++)
+        if (strncmp(g_prod_agg[i].product, prod, MAX_PRODUCT_LEN) == 0)
+            return i;
+    if (g_num_prods >= MAX_PRODUCTS) return -1;
+    int idx = g_num_prods++;
+    memset(&g_prod_agg[idx], 0, sizeof(ProductEntry));
+    strncpy(g_prod_agg[idx].product, prod, MAX_PRODUCT_LEN - 1);
     return idx;
 }
 
@@ -136,17 +151,28 @@ static void parse_and_aggregate(const char *line)
     char *cr = strchr(buf, '\r'); if (cr) *cr = '\0';
     if (buf[0] == '\0' || buf[0] == '#') return;
 
+    /* Skip header line if present */
+    if (strncmp(buf, "Category,ProductName", 20) == 0) return;
+
     char *saveptr = NULL;
-    char *token   = strtok_r(buf, ",", &saveptr);
-    if (!token || token[0] == '\0') return;
+    char *cat_tok = strtok_r(buf, ",", &saveptr);
+    if (!cat_tok || cat_tok[0] == '\0') return;
+
+    char *prod_tok = strtok_r(NULL, ",", &saveptr);
+    if (!prod_tok || prod_tok[0] == '\0') return;
 
     char category[MAX_CATEGORY_LEN];
-    strncpy(category, token, MAX_CATEGORY_LEN - 1);
+    strncpy(category, cat_tok, MAX_CATEGORY_LEN - 1);
     category[MAX_CATEGORY_LEN - 1] = '\0';
 
-    /* Sum all numeric tokens that follow the category */
+    char product[MAX_PRODUCT_LEN];
+    strncpy(product, prod_tok, MAX_PRODUCT_LEN - 1);
+    product[MAX_PRODUCT_LEN - 1] = '\0';
+
+    /* Sum all numeric tokens that follow the product */
     double revenue    = 0.0;
     int    has_number = 0;
+    char  *token;
 
     while ((token = strtok_r(NULL, ",", &saveptr)) != NULL) {
         char   *endptr = NULL;
@@ -157,7 +183,6 @@ static void parse_and_aggregate(const char *line)
             revenue    += val;
             has_number  = 1;
         }
-        /* Non-numeric token → skip (could be a product name) */
     }
 
     if (!has_number) return;
@@ -171,9 +196,14 @@ static void parse_and_aggregate(const char *line)
         g_agg[idx].record_count++;
         if (revenue > g_agg[idx].max_single) g_agg[idx].max_single = revenue;
         if (revenue < g_agg[idx].min_single) g_agg[idx].min_single = revenue;
-        g_total_rows++;
     }
 
+    int p_idx = agg_prod_find_or_create(product);
+    if (p_idx >= 0) {
+        g_prod_agg[p_idx].total_revenue += revenue;
+    }
+
+    g_total_rows++;
     pthread_mutex_unlock(&g_agg_mutex);
 }
 
@@ -481,9 +511,12 @@ int main(int argc, char *argv[])
     }
 
     shm->num_categories = g_num_cats;
+    shm->num_products   = g_num_prods;
     shm->total_records  = g_total_rows;
     for (int i = 0; i < g_num_cats; i++)
         shm->categories[i] = g_agg[i];
+    for (int i = 0; i < g_num_prods; i++)
+        shm->products[i] = g_prod_agg[i];
 
     munmap(shm, sizeof(SharedData));
     LOG("Aggregation data written to shared memory (%s)", shm_name);
