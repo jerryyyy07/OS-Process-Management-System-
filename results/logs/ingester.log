@@ -1,0 +1,9 @@
+[21:57:22] [PID:662 PPID:661] Ingester started. input_dir=. fifo=/tmp/retail_fifo_635
+[21:57:22] [PID:662 PPID:661] Found 1 CSV file(s)
+[21:57:22] [PID:662 PPID:661] Opening FIFO for writing (blocking until processor connects)...
+[21:57:22] [PID:662 PPID:661] FIFO opened for writing
+[21:57:22] [PID:662 PPID:661] Processing file 1/1: ./transactions.csv
+[21:57:22] [PID:662 PPID:661] Sent chunk #0 from file_id=0 (605 bytes)
+[21:57:22] [PID:662 PPID:661] Finished file: ./transactions.csv (1 chunks total so far)
+[21:57:22] [PID:662 PPID:661] EOF sentinel sent
+[21:57:22] [PID:662 PPID:661] Ingester done. files=1 chunks=1 bytes=605

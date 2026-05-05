@@ -78,8 +78,7 @@ static void get_exe_dir(char *out, size_t len) {
         char *slash = strrchr(buf, '/');
         if (slash) {
             *slash = '\0';
-            strncpy(out, buf, len - 1);
-            out[len-1] = '\0';
+            snprintf(out, len, "%s", buf);
             return;
         }
     }
@@ -146,22 +145,36 @@ static int reap_children(void) {
 }
 
 static void print_summary(void) {
-    printf("\n----------------------------------------------------------\n");
-    printf("                  EXECUTION SUMMARY                       \n");
-    printf("----------------------------------------------------------\n");
-    printf("%-12s | %-8s | %-12s | %-12s\n", "Component", "PID", "Exit Status", "Runtime (s)");
-    printf("----------------------------------------------------------\n");
+    const char *CYAN  = "\033[1;36m";
+    const char *GOLD  = "\033[1;33m";
+    const char *WHITE = "\033[1;37m";
+    const char *RESET = "\033[0m";
+    const char *GREEN = "\033[1;32m";
+    const char *RED   = "\033[1;31m";
 
+    printf("\n%s  » %s[ %sPIPELINE SYSTEM STATUS%s ]%s «%s\n", CYAN, WHITE, GOLD, WHITE, CYAN, RESET);
+    printf("%s  ────────────────────────────────────────────────────────────%s\n", CYAN, RESET);
+
+    double total_rt = 0.0;
     for (int i = 0; i < NUM_CHILDREN; i++) {
         double rt = 0.0;
         if (child_done[i]) {
             rt = (child_end[i].tv_sec - child_start[i].tv_sec) + 
                  (child_end[i].tv_nsec - child_start[i].tv_nsec) / 1e9;
+            if (rt > total_rt) total_rt = rt;
         }
         int status = (child_done[i] && WIFEXITED(child_status[i])) ? WEXITSTATUS(child_status[i]) : -1;
-        printf("%-12s | %-8d | %-12d | %-12.3f\n", child_names[i], child_pids[i], status, rt);
+        
+        const char *symbol = (status == 0) ? "●" : "✖";
+        const char *s_color = (status == 0) ? GREEN : RED;
+        const char *label   = (status == 0) ? "SUCCESS" : "FAILED";
+
+        printf("  %s%s %s%-12s %s%-14s %s[ PID: %-5d ] [ %s%s%s ] [ %s%.3fs %s]%s\n", 
+               s_color, symbol, WHITE, child_names[i], CYAN, "..............", WHITE, child_pids[i], s_color, label, WHITE, GOLD, rt, WHITE, RESET);
     }
-    printf("----------------------------------------------------------\n\n");
+
+    printf("%s  ────────────────────────────────────────────────────────────%s\n", CYAN, RESET);
+    printf("  %sTOTAL PIPELINE LATENCY: %s%.4fs%s\n\n", GOLD, WHITE, total_rt, RESET);
     fflush(stdout);
 }
 
@@ -244,8 +257,9 @@ int main(int argc, char *argv[]) {
     sigaddset(&block_set, SIGUSR1);
     sigprocmask(SIG_BLOCK, &block_set, NULL);
 
-    // Prepare paths and arguments
-    char exe_dir[MAX_PATH_LEN], exe_i[MAX_PATH_LEN], exe_p[MAX_PATH_LEN], exe_r[MAX_PATH_LEN];
+    // Prepare paths and arguments (using larger buffers to avoid truncation warnings)
+    char exe_dir[MAX_PATH_LEN];
+    char exe_i[MAX_PATH_LEN + 32], exe_p[MAX_PATH_LEN + 32], exe_r[MAX_PATH_LEN + 32];
     get_exe_dir(exe_dir, sizeof(exe_dir));
     snprintf(exe_i, sizeof(exe_i), "%s/ingester", exe_dir);
     snprintf(exe_p, sizeof(exe_p), "%s/processor", exe_dir);
@@ -259,7 +273,7 @@ int main(int argc, char *argv[]) {
     char *args_p[] = { exe_p, (char*)fifo_path, (char*)shm_name, (char*)sem_name, s_threads, s_queue, NULL };
     char *args_r[] = { exe_r, (char*)shm_name, (char*)sem_name, (char*)output_dir, NULL };
 
-    char log_i[MAX_PATH_LEN], log_p[MAX_PATH_LEN], log_r[MAX_PATH_LEN];
+    char log_i[MAX_PATH_LEN + 32], log_p[MAX_PATH_LEN + 32], log_r[MAX_PATH_LEN + 32];
     snprintf(log_i, sizeof(log_i), "%s/ingester.log", logs_dir);
     snprintf(log_p, sizeof(log_p), "%s/processor.log", logs_dir);
     snprintf(log_r, sizeof(log_r), "%s/reporter.log", logs_dir);

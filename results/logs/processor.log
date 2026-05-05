@@ -1,0 +1,13 @@
+[21:57:22] [PID:663 PPID:661] Processor started. threads=4, queue=10
+[21:57:22] [PID:663 PPID:661] Worker thread 0 started
+[21:57:22] [PID:663 PPID:661] Reader thread started
+[21:57:22] [PID:663 PPID:661] Worker thread 1 started
+[21:57:22] [PID:663 PPID:661] Worker thread 3 started
+[21:57:22] [PID:663 PPID:661] Worker thread 2 started
+[21:57:22] [PID:663 PPID:661] Reader: EOF sentinel received after 1 chunks
+[21:57:22] [PID:663 PPID:661] Worker 1 exiting (Processed 0 rows)
+[21:57:22] [PID:663 PPID:661] Worker 3 exiting (Processed 0 rows)
+[21:57:22] [PID:663 PPID:661] Worker 2 exiting (Processed 0 rows)
+[21:57:22] [PID:663 PPID:661] Worker 0 exiting (Processed 16 rows)
+[21:57:22] [PID:663 PPID:661] Aggregation complete. Categories=6, Rows=15
+[21:57:22] [PID:663 PPID:661] Processor exiting with code 0

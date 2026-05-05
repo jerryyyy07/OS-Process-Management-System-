@@ -109,7 +109,7 @@ static int agg_find_or_create(const char *cat) {
     
     int idx = g_num_cats++;
     memset(&g_agg[idx], 0, sizeof(CategoryEntry));
-    strncpy(g_agg[idx].category, cat, MAX_CATEGORY_LEN - 1);
+    snprintf(g_agg[idx].category, MAX_CATEGORY_LEN, "%s", cat);
     g_agg[idx].min_single = 1e308; // Initialize min to a very large number
     return idx;
 }
@@ -122,7 +122,7 @@ static int agg_prod_find_or_create(const char *prod) {
     
     int idx = g_num_prods++;
     memset(&g_prod_agg[idx], 0, sizeof(ProductEntry));
-    strncpy(g_prod_agg[idx].product, prod, MAX_PRODUCT_LEN - 1);
+    snprintf(g_prod_agg[idx].product, MAX_PRODUCT_LEN, "%s", prod);
     return idx;
 }
 
