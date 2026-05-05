@@ -1,13 +1,13 @@
-[22:40:31] [PID:1316 PPID:1314] Processor started. threads=4, queue=10
-[22:40:31] [PID:1316 PPID:1314] Worker thread 0 started
-[22:40:31] [PID:1316 PPID:1314] Worker thread 1 started
-[22:40:31] [PID:1316 PPID:1314] Worker thread 2 started
-[22:40:31] [PID:1316 PPID:1314] Worker thread 3 started
-[22:40:31] [PID:1316 PPID:1314] Reader thread started
-[22:40:31] [PID:1316 PPID:1314] Reader: EOF sentinel received after 1 chunks
-[22:40:31] [PID:1316 PPID:1314] Worker 1 exiting (Processed 0 rows)
-[22:40:31] [PID:1316 PPID:1314] Worker 2 exiting (Processed 0 rows)
-[22:40:31] [PID:1316 PPID:1314] Worker 3 exiting (Processed 0 rows)
-[22:40:31] [PID:1316 PPID:1314] Worker 0 exiting (Processed 16 rows)
-[22:40:31] [PID:1316 PPID:1314] Aggregation complete. Categories=6, Rows=15
-[22:40:31] [PID:1316 PPID:1314] Processor exiting with code 0
+[22:45:40] [PID:1365 PPID:1363] Processor started. threads=4, queue=10
+[22:45:40] [PID:1365 PPID:1363] Worker thread 0 started
+[22:45:40] [PID:1365 PPID:1363] Worker thread 2 started
+[22:45:40] [PID:1365 PPID:1363] Worker thread 1 started
+[22:45:40] [PID:1365 PPID:1363] Reader thread started
+[22:45:40] [PID:1365 PPID:1363] Worker thread 3 started
+[22:45:40] [PID:1365 PPID:1363] Reader: EOF sentinel received after 1 chunks
+[22:45:40] [PID:1365 PPID:1363] Worker 2 exiting (Processed 0 rows)
+[22:45:40] [PID:1365 PPID:1363] Worker 1 exiting (Processed 0 rows)
+[22:45:40] [PID:1365 PPID:1363] Worker 3 exiting (Processed 0 rows)
+[22:45:40] [PID:1365 PPID:1363] Worker 0 exiting (Processed 16 rows)
+[22:45:40] [PID:1365 PPID:1363] Aggregation complete. Categories=6, Rows=15
+[22:45:40] [PID:1365 PPID:1363] Processor exiting with code 0

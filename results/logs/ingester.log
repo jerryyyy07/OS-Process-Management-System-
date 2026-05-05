@@ -1,9 +1,9 @@
-[22:40:31] [PID:1315 PPID:1314] Ingester started. input_dir=. fifo=/tmp/retail_fifo_1288
-[22:40:31] [PID:1315 PPID:1314] Found 1 CSV file(s)
-[22:40:31] [PID:1315 PPID:1314] Opening FIFO for writing (blocking until processor connects)...
-[22:40:31] [PID:1315 PPID:1314] FIFO opened for writing
-[22:40:31] [PID:1315 PPID:1314] Processing file 1/1: ./transactions.csv
-[22:40:31] [PID:1315 PPID:1314] Sent chunk #0 from file_id=0 (605 bytes)
-[22:40:31] [PID:1315 PPID:1314] Finished file: ./transactions.csv (1 chunks total so far)
-[22:40:31] [PID:1315 PPID:1314] EOF sentinel sent
-[22:40:31] [PID:1315 PPID:1314] Ingester done. files=1 chunks=1 bytes=605
+[22:45:40] [PID:1364 PPID:1363] Ingester started. input_dir=. fifo=/tmp/retail_fifo_1337
+[22:45:40] [PID:1364 PPID:1363] Found 1 CSV file(s)
+[22:45:40] [PID:1364 PPID:1363] Opening FIFO for writing (blocking until processor connects)...
+[22:45:40] [PID:1364 PPID:1363] FIFO opened for writing
+[22:45:40] [PID:1364 PPID:1363] Processing file 1/1: ./transactions.csv
+[22:45:40] [PID:1364 PPID:1363] Sent chunk #0 from file_id=0 (605 bytes)
+[22:45:40] [PID:1364 PPID:1363] Finished file: ./transactions.csv (1 chunks total so far)
+[22:45:40] [PID:1364 PPID:1363] EOF sentinel sent
+[22:45:40] [PID:1364 PPID:1363] Ingester done. files=1 chunks=1 bytes=605
