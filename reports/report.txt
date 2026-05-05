@@ -1,0 +1,21 @@
+========================================
+ RETAIL TRANSACTIONS REPORT (TOP 5)
+========================================
+Total Records Processed: 15
+Distinct Categories: 6
+Distinct Products: 15
+
+--- TOP CATEGORIES ---
+1. Electronics          | Revenue: $2301.98 (Rows: 3)
+2. Home_Garden          | Revenue: $258.24 (Rows: 2)
+3. Clothing             | Revenue: $174.50 (Rows: 3)
+4. Sports               | Revenue: $79.00 (Rows: 2)
+5. Automotive           | Revenue: $57.21 (Rows: 2)
+
+--- TOP PRODUCTS ---
+1. Laptop_Pro           | Revenue: $1364.50
+2. Smartphone_X         | Revenue: $789.99
+3. Lawn_Mower           | Revenue: $242.49
+4. Wireless_Earbuds     | Revenue: $147.49
+5. Winter_Jacket        | Revenue: $111.00
+========================================

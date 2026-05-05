@@ -1,0 +1,13 @@
+[21:37:52] [PID:8400 PPID:8397] Processor started. threads=4, queue=100
+[21:37:52] [PID:8400 PPID:8397] Worker thread 0 started
+[21:37:52] [PID:8400 PPID:8397] Worker thread 2 started
+[21:37:52] [PID:8400 PPID:8397] Worker thread 1 started
+[21:37:52] [PID:8400 PPID:8397] Reader thread started
+[21:37:52] [PID:8400 PPID:8397] Worker thread 3 started
+[21:37:52] [PID:8400 PPID:8397] Reader: EOF sentinel received after 1 chunks
+[21:37:52] [PID:8400 PPID:8397] Worker 0 exiting (Processed 16 rows)
+[21:37:52] [PID:8400 PPID:8397] Worker 1 exiting (Processed 0 rows)
+[21:37:52] [PID:8400 PPID:8397] Worker 3 exiting (Processed 0 rows)
+[21:37:52] [PID:8400 PPID:8397] Worker 2 exiting (Processed 0 rows)
+[21:37:52] [PID:8400 PPID:8397] Aggregation complete. Categories=6, Rows=15
+[21:37:52] [PID:8400 PPID:8397] Processor exiting with code 0
