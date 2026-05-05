@@ -114,33 +114,36 @@ int main(int argc, char *argv[]) {
         char *t_str = ctime(&now);
         t_str[strlen(t_str)-1] = '\0'; // remove newline
 
-        printf("------------------------------------------\n");
-        printf("       DATA PIPELINE EXECUTION REPORT     \n");
-        printf("------------------------------------------\n");
-        printf("Generated at:  %s\n", t_str);
-        printf("Status:        COMPLETED_SUCCESS\n");
-        printf("------------------------------------------\n\n");
+        printf("============================================================\n");
+        printf("             PARALLEL DATA PIPELINE AUDIT REPORT            \n");
+        printf("============================================================\n");
+        printf(" TIMESTAMP : %s\n", t_str);
+        printf(" STATUS    : SUCCESS\n");
+        printf("============================================================\n\n");
 
-        printf("[ SUMMARY STATISTICS ]\n");
+        printf("1. PIPELINE METRICS\n");
+        printf("------------------------------------------------------------\n");
         printf("  Total Rows Processed : %llu\n", (unsigned long long)shm->total_records);
         printf("  Unique Categories    : %d\n", num_cats);
         printf("  Unique Products      : %d\n\n", num_prods);
         
-        printf("[ TOP CATEGORIES BY REVENUE ]\n");
+        printf("2. REVENUE ANALYSIS BY CATEGORY\n");
+        printf("------------------------------------------------------------\n");
         int print_count = (num_cats < TOP_N_REPORT) ? num_cats : TOP_N_REPORT;
         for (int i = 0; i < print_count; i++) {
-            printf("[%d] %-15s : $%.2f (%llu rows)\n", 
+            printf("  (%d) %-15s : $ %10.2f [ %llu rows ]\n", 
                    i + 1, categories[i].category, categories[i].total_revenue, 
                    (unsigned long long)categories[i].record_count);
         }
         
-        printf("\nTOP PRODUCTS BY REVENUE\n");
+        printf("\n3. TOP PERFORMING PRODUCTS\n");
+        printf("------------------------------------------------------------\n");
         int prod_print_count = (num_prods < TOP_N_REPORT) ? num_prods : TOP_N_REPORT;
         for (int i = 0; i < prod_print_count; i++) {
-            printf("[%d] %-15s : $%.2f\n", 
+            printf("  [#%d] %-15s : $ %10.2f\n", 
                    i + 1, products[i].product, products[i].total_revenue);
         }
-        printf("---------------------------\n");
+        printf("\n============================================================\n");
         fflush(stdout);
 
         // Restore standard output back to the terminal

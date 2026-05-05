@@ -1,26 +1,30 @@
-------------------------------------------
-       DATA PIPELINE EXECUTION REPORT     
-------------------------------------------
-Generated at:  Tue May  5 21:57:22 2026
-Status:        COMPLETED_SUCCESS
-------------------------------------------
+============================================================
+             PARALLEL DATA PIPELINE AUDIT REPORT            
+============================================================
+ TIMESTAMP : Tue May  5 22:04:48 2026
+ STATUS    : SUCCESS
+============================================================
 
-[ SUMMARY STATISTICS ]
+1. PIPELINE METRICS
+------------------------------------------------------------
   Total Rows Processed : 15
   Unique Categories    : 6
   Unique Products      : 15
 
-[ TOP CATEGORIES BY REVENUE ]
-[1] Electronics     : $2301.98 (3 rows)
-[2] Home_Garden     : $258.24 (2 rows)
-[3] Clothing        : $174.50 (3 rows)
-[4] Sports          : $79.00 (2 rows)
-[5] Automotive      : $57.21 (2 rows)
+2. REVENUE ANALYSIS BY CATEGORY
+------------------------------------------------------------
+  (1) Electronics     : $    2301.98 [ 3 rows ]
+  (2) Home_Garden     : $     258.24 [ 2 rows ]
+  (3) Clothing        : $     174.50 [ 3 rows ]
+  (4) Sports          : $      79.00 [ 2 rows ]
+  (5) Automotive      : $      57.21 [ 2 rows ]
 
-TOP PRODUCTS BY REVENUE
-[1] Laptop_Pro      : $1364.50
-[2] Smartphone_X    : $789.99
-[3] Lawn_Mower      : $242.49
-[4] Wireless_Earbuds : $147.49
-[5] Winter_Jacket   : $111.00
----------------------------
+3. TOP PERFORMING PRODUCTS
+------------------------------------------------------------
+  [#1] Laptop_Pro      : $    1364.50
+  [#2] Smartphone_X    : $     789.99
+  [#3] Lawn_Mower      : $     242.49
+  [#4] Wireless_Earbuds : $     147.49
+  [#5] Winter_Jacket   : $     111.00
+
+============================================================
